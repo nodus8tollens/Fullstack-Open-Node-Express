@@ -35,6 +35,14 @@ app.get("/api/persons", (req, res) => {
 app.post("/api/persons", (req, res) => {
   const newId = Math.floor(Math.random() * 1000000);
   const body = req.body;
+  const personExists = persons.find((p) => p.name === body.name);
+
+  if (personExists) {
+    return res.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
   if (!body.name || !body.number) {
     return res.status(400).json({
       error: "content missing",
